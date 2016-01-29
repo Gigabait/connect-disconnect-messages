@@ -14,7 +14,7 @@ local function tableSubToUtf8(tbl, startPos, endPos)
 	endPos = endPos or #tbl
 
 	if (startPos > endPos) or (startPos < 1) or (endPos < 1) then
-		return
+		return ""
 	end
 
 	local ret = ""
