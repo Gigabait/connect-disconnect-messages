@@ -46,10 +46,9 @@ local function tableInsertColor(tbl, clr)
 
 	if istable(v) then
 		tbl[#tbl] = clr
-		return
+	else
+		table.insert(tbl, clr)
 	end
-
-	table.insert(tbl, clr)
 end
 
 -- Parse messages with colors into a table for chat.AddText().
@@ -60,25 +59,37 @@ end
 --   "and #ff0000cool" -> {"and ", Color(255, 0, 0), "cool"}
 --   "no colors ##AABBCC" -> {"no colors #AABBCC"}
 local function processColorMessage(msg)
+	-- table of utf-8 character byte sequences
+	-- i'll just call them char{s|acters}
 	local chars = utf8ToTable(msg)
+	-- the table return that's full of shit
 	local ret = {}
+	-- y is the start position of where we should sub from.
+	-- an example being grabbing subbing a color from a string and then
+	--  y would be the index of the character after the color:
+	--  "foo #a1b2c3bar" -> y = 12 because 'b' is str[12]
 	local y = 1
 
+	-- i is just our current character index
 	local i = 1
 	while #chars >= i do
-		local c = utf8.char(chars[i])
+		local firstChar = utf8.char(chars[i])
 
 		i = i + 1
 
-		if c ~= "#" then
+		if firstChar ~= "#" then
 			continue
 		end
 
-		local nc = utf8.char(chars[i])
-		assert(nc ~= "")
+		local nextChar = utf8.char(chars[i])
+		assert(nextChar ~= "")
 
 		-- handle '##'
-		if nc == "#" then
+		if nextChar == "#" then
+			-- example:
+			--  from "foo##bar"
+			--  insert "foo#" into ret
+			--  set indexes to "bar"
 			tableInsertString(ret, tableSubToUtf8(chars, y, i-1))
 			i = i + 1
 			y = i
@@ -107,7 +118,7 @@ local function processColorMessage(msg)
 		tableInsertString(ret, v)
 	end
 
-	PrintTable(ret)
+	--PrintTable(ret)
 
 	return ret
 end
