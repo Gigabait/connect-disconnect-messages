@@ -1,9 +1,5 @@
--- When the player has connected and is in the server.
-util.AddNetworkString("cdmessage_player_connected")
--- When the player starts connecting to the server.
-util.AddNetworkString("cdmessage_player_connecting")
--- When the player has left/disconnected from the server.
-util.AddNetworkString("cdmessage_player_disconnected")
+-- The message thing
+util.AddNetworkString("connect_disconnect_message")
 
 hook.Add("PlayerInitialSpawn", "cdmessage_connected", function(plr)
 	-- net.Start("cdmessage_connected")
@@ -38,3 +34,21 @@ hook.Add("player_disconnect", "cdmessage_disconnected", function(tbl)
 	-- net.WriteBool(tobool(tbl.bot))
 	-- net.Broadcast()
 end)
+
+function SendCDMessage(str)
+	if str == "" then
+		return
+	end
+
+	local compressed = util.Compress(str)
+	local size = compressed:len()
+
+	if size == 0 then
+		return
+	end
+
+	net.Start("connect_disconnect_message")
+	net.WriteUInt(size, 16)
+	net.WriteData(compressed, size)
+	net.Broadcast()
+end
