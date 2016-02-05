@@ -2,6 +2,8 @@
 import os
 import urllib.request
 
+# http://webmasters.stackexchange.com/a/34663
+
 RIR_Stats = {
 	"apnic": [
 		"ftp://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest",
