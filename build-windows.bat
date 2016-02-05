@@ -28,7 +28,7 @@ IF DEFINED VS140COMNTOOLS (
 echo.
 
 for /R build %%X in (*.sln) do (
-	msbuild %%X
+	msbuild "%%X"
 )
 
 :: We're done!
