@@ -1,3 +1,5 @@
+require("iptocountry")
+
 -- The message thing
 util.AddNetworkString("connect_disconnect_message")
 
