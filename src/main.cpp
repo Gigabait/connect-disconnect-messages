@@ -66,6 +66,7 @@ int lua_CountryStringTable(lua_State *state)
 		// country = iptocountry(stack_top)
 		char const * country = lua_CountryString(state, -1);
 
+		// Return nothing - aka nil
 		if (country == NULL)
 			return 0;
 
