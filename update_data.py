@@ -3,6 +3,7 @@ import os
 import urllib.request
 
 # http://webmasters.stackexchange.com/a/34663
+# https://quaxio.com/bgp/
 
 RIR_Stats = {
 	"apnic": [
@@ -45,7 +46,7 @@ for k in RIR_Stats:
 		f = ('data/' + s.split('/')[-1])
 
 		if not os.path.exists(f):
-			print('Downloading ' + f)
+			print('\t\tDownloading ' + f)
 			files.append(urllib.request.urlretrieve(s, f))
 
 	print('')
